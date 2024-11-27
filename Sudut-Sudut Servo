@@ -1,0 +1,36 @@
+BAGIAN LENGAN
+
+    Siku kanan         = 180 bawah (Sejajar Badan Robot)
+                         90 kanan  (Tegak Lurus Badan Robot)
+    
+    Siku kiri          = 0 bawah   (Sejajar Badan Robot)
+                         90 kanan  (Tegak Lurus Badan Robot)
+    
+    Tangan kanan       = 90 bawah  (Sejajar Badan Robot)
+                         0 kiri    (Tegak Lurus Lengan Robot)
+    
+    Tangan kiri        = 90 bawah  (Sejajar Badan Robot)
+                         180 kiri  (Tegak Lurus Badan Robot)
+    
+    bahu kiri          = 0 atas    (Berlawanan Badan Robot)
+                         180 bawah (Sejajar Badan Robot) 
+                         90 depan  (Tegak Lurus Badan Robot)
+    
+    bahu kanan         = 0 bawah   (Sejajar Badan Robot)
+                         180 atas  (Berlawanan Badan Robot) 
+                         90 depan  (Tegak Lurus Badan Robot)
+
+
+BAGIAN KAKI
+
+    pinggang kiri      = 0 kiri
+                         90 depan
+                         180 kanan
+
+    pinggang kanan     = 0 kanan
+                         90 depan
+                         180 kiri
+
+    lutut kiri kanan   = 45 lurus bawah 
+                         90 depan 
+                         0 belakang
