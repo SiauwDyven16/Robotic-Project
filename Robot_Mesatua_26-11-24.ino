@@ -1,6 +1,6 @@
 #include <ESP32Servo.h>
 
-
+//Deklarasi Servo, dan pin-pin
 Servo PINGGANG_KANAN, 
 PINGGANG_KIRI, 
 BAHU_KANAN, 
@@ -10,6 +10,8 @@ SIKU_KIRI,
 TANGAN_KANAN, 
 TANGAN_KIRI;
 
+
+//inisialisasi pin servo sesuai part-part robot
 int BAHU_KANAN_PIN = 33;
 int BAHU_KIRI_PIN = 27;
 int SIKU_KANAN_PIN = 32;
@@ -28,21 +30,30 @@ void setup() {
 }
 
 void ACTION_pushup() {
+//Posisi Awal
+  //Tangan 90 derajat > Tegak Lurus Dengan Tubuh Robot
   BAHU_KANAN.write(90);
   BAHU_KIRI.write(90);
   delay(1000);
-  
+
+//Loop Untuk Gerakan Push-up
  for (int i = 0; i < 4; i++) {
+   //Posisi Awal Push Up Bagian Siku/Lengan Bawah 
     SIKU_KANAN.write(180);
     SIKU_KIRI.write(0);
+   
+   //Posisi Awal Push Up Bagian Tangan/Lengan Atas 
     TANGAN_KANAN.write(90);
     TANGAN_KIRI.write(90);
     delay(500);
-
-    SIKU_KANAN.write(90);
-    SIKU_KIRI.write(90);
-    TANGAN_KANAN.write(180);
-    TANGAN_KIRI.write(90);
+   
+    //Posisi Turun Push Up Bagian Siku/Lengan Bawah
+    SIKU_KANAN.write(90);//Ke kiri 90 derajat
+    SIKU_KIRI.write(90);//Ke kanan 90 derajat
+   
+    //Posisi Turun Push Up Bagian Tangan/Lengan Atas
+    TANGAN_KANAN.write(180);//Ke Kanan 90 derajat (posisi awal 90 derajat jg)
+    TANGAN_KIRI.write(0);//Ke Kiri -90 derajat (posisi awal 90 derajat jg)
     delay(500);
   }
 
