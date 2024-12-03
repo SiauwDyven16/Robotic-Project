@@ -1,0 +1,150 @@
+#include <Wire.h>
+#include <Adafruit_PWMServoDriver.h>
+#include <WiFi.h>
+
+
+#define BLYNK_TEMPLATE_ID "TMPL6ALbgxl22"
+#define BLYNK_TEMPLATE_NAME "robot mesatua"
+#define BLYNK_AUTH_TOKEN "UI_fGpZFz4cV1RA0IzKeKvfOpQ61AbjA" 
+
+#include <WiFi.h>
+#include <WiFiClient.h>
+#include <BlynkSimpleEsp32.h>
+
+char ssid[] = "wikan";
+char pass[] = "tanya wikan";
+
+// Buat objek PCA9685
+Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
+
+int BAHU_KANAN = 0;
+int BAHU_KIRI = 1;
+
+int SIKU_KANAN = 2; 
+int SIKU_KIRI = 3;
+
+int TANGAN_KANAN = 4;
+int TANGAN_KIRI = 5;
+
+int PINGGANG_KANAN = 6;
+int PINGGANG_KIRI = 7;
+
+int PAHA_KANAN = 8;
+int PAHA_KIRI = 9;
+
+int LUTUT_KANAN = 10;
+int LUTUT_KIRI = 11;
+
+int PERGELANGAN_KANAN = 12;
+int PERGELANGAN_KIRI = 13;
+
+int TELAPAK_KAKI_KANAN = 14;
+int TELAPAK_KAKI_KIRI = 15;
+
+#define SERVOMIN 150 // Posisi minimum (0°)
+#define SERVOMAX 380 // Posisi maksimum (180°)
+
+int currentChannel = 0;
+int currentPos = 150;
+
+int posList[50][2] = {};
+int count = 0;
+
+void setup() {
+  Serial.begin(9600);
+
+  // Inisialisasi I2C dan PCA9685
+  Wire.begin(26, 27); // Pin default ESP32: SDA (GPIO21), SCL (GPIO22)
+  pwm.begin();
+  pwm.setOscillatorFrequency(27000000); // Atur frekuensi osilator menjadi 27 MHz
+  pwm.setPWMFreq(50); // Atur frekuensi PWM ke 50 Hz (standar servo)
+  Serial.println("PCA9685 siap!");
+  Blynk.begin(BLYNK_AUTH_TOKEN, ssid, pass);
+  Wi
+}
+
+void debugMode() {
+  String data = Serial.readString();
+
+  if (data.startsWith("-")) {
+    currentChannel = data.substring(1).toInt();
+    currentPos = 150;
+
+    Serial.print("Channel set to: ");
+    Serial.println(currentChannel);
+  }
+
+   if (data.startsWith("p")) {
+    int _pos = data.substring(1).toInt();
+    if (data.isEmpty()) return;
+    
+    while (true) {
+      pwm.setPWM(currentChannel, currentChannel, currentPos);
+
+      if (_pos >= currentPos) {
+        currentPos++;
+      
+      } else { currentPos--; }
+
+      if (_pos == currentPos) break;
+
+      if (currentPos > 0) {
+        Serial.print("Current pos: ");
+        Serial.println(currentPos);
+      }
+
+      delay(10);
+    }
+  }
+
+  if (data.startsWith("set")) {
+    posList[count][0] = currentChannel;
+    posList[count][1] = currentPos;
+    count++;
+
+    Serial.println("Pos saved");
+  }
+
+  if (data.startsWith("view")) {
+    for (int i = 0; i < count; i++) {
+      Serial.print("pwm.setPWM("); Serial.print(posList[i][0]);
+      Serial.print(", "); Serial.print(posList[i][0]);
+      Serial.print(", "); Serial.print(posList[i][1]);
+      Serial.println(");");
+    }
+  }
+
+  if (data.startsWith("run")) {
+    for (int i = 0; i < count; i++) {
+      pwm.setPWM(posList[i][0], posList[i][0], posList[i][1]);
+    }
+  }
+}
+
+void loop() {
+  // pwm.setPWM(6, 6, 400); //pinggang kanan
+  // pwm.setPWM(7, 7, 300); //pinggang kiri
+
+  // pwm.setPWM(8, 8, 300); //paha kanan
+  // pwm.setPWM(9, 9, 170); //paha kiri
+
+  // pwm.setPWM(10, 10, 250); //lutut kanan
+  // pwm.setPWM(11, 11, 100); //lutut kiri
+
+  // pwm.setPWM(12, 12, 100);  //pergelangan kanan
+  // pwm.setPWM(0, 0, 200);  //pergelangan kiri
+
+  // pwm.setPWM(14, 14, 100);  //telapak kanan
+  // pwm.setPWM(15, 15, 100);  //telapak kiri
+
+  //--------------------------------------------- new
+
+  // pwm.setPWM(8, 8, 300); //paha kanan
+  // pwm.setPWM(9, 9, 170); //paha kiri
+  // pwm.setPWM(10, 10, 250); //lutut kanan
+  // pwm.setPWM(11, 11, 100); //lutut kiri
+  // pwm.setPWM(12, 12, 100); //pergelangan kanan
+  // pwm.setPWM(13, 13, 230); //pergelangan kanan
+  debugMode();
+  // Blynk.run();
+}
